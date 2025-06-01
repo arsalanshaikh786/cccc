@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Services | Arsalan Shaikh Company</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --secondary: #3730a3;
+      --background: #f3f4f6;
+      --card-bg: #ffffff;
+      --text: #333;
+    }
+    * {
+      box-sizing: border-box;
+      padding: 0;
+      margin: 0;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--background);
+      color: var(--text);
+      animation: fadeIn 1.2s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    header {
+      position: relative;
+      background: linear-gradient(90deg, #4f46e5, #6366f1);
+      padding: 30px 20px;
+      color: white;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    header p {
+      font-size: 1rem;
+      font-weight: 400;
+      color: #e0e7ff;
+    }
+    nav {
+      background: var(--secondary);
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    nav a:hover {
+      color: #a5b4fc;
+      transform: scale(1.05);
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.8rem;
+      }
+      nav {
+        gap: 18px;
+        padding: 10px;
+      }
+    }
+    .container {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto 60px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      padding: 25px 20px 30px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.18);
+    }
+    .card img {
+      width: 90px;
+      height: 90px;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));
+    }
+    .card h3 {
+      font-size: 1.3rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    .card p {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 18px;
+      line-height: 1.4;
+      flex-grow: 1;
+    }
+    .card a {
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .card a:hover {
+      border-color: var(--primary);
+    }
+  </style>
+</head>
+<body>
+  <!-- User Info -->
+  <div id="user-info" class="p-4 text-center"></div>
+
+  <header>
+    <img src="https://img.icons8.com/color/96/online-store.png" alt="Logo" />
+    <div>
+      <h1>Online Services Store</h1>
+      <p>By <strong>Arsalan Shaikh Company</strong></p>
+    </div>
+    <!-- User Info on top right -->
+    <div id="user-profile" style="
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255 255 255 / 0.15);
+      padding: 6px 12px;
+      border-radius: 30px;
+      color: white;
+      font-weight: 600;
+      font-family: 'Poppins', sans-serif;
+    ">
+      <img id="user-avatar" src="https://via.placeholder.com/40?text=👤" alt="User Avatar" style="width:40px; height:40px; border-radius:50%; object-fit:cover; box-shadow: 0 0 5px rgba(0,0,0,0.3);" />
+      <div style="display:flex; flex-direction: column; font-size: 0.85rem; line-height:1.2; min-width: 100px;">
+        <span id="user-name">User</span>
+        <span id="user-id" style="font-weight:400; font-size:0.75rem; opacity:0.8;">UID</span>
+      </div>
+      <button id="logoutBtn" style="
+        background: #ef4444;
+        border: none;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: background 0.3s ease;
+      ">Logout</button>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Services</a>
+    <a href="about.html">About</a>
+    <a href="connn.html">Contact</a>
+  </nav>
+
+  <main class="container">
+    <!-- Service Cards -->
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/plumber.png" alt="Plumber" />
+      <h3>Plumber</h3>
+      <p>Expert plumbing services for repairs, installation, and emergencies.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/electrician.png" alt="Electrician" />
+      <h3>Electrician</h3>
+      <p>Certified electricians for home wiring, lighting, and more.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/home.png" alt="Home Cleaning" />
+      <h3>Home Cleaning</h3>
+      <p>Reliable and professional cleaning for houses and apartments.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/carpenter.png" alt="Carpenter" />
+      <h3>Carpenter</h3>
+      <p>Custom furniture, repairs, and woodwork services at your door.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/ac.png" alt="AC Repair" />
+      <h3>AC Repair</h3>
+      <p>AC installation, servicing, and repair for all brands and models.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/barber.png" alt="Barber" />
+      <h3>Barber</h3>
+      <p>On-demand haircuts, grooming, and styling for men and kids.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/nail-care.png" alt="Beauty Services" />
+      <h3>Beauty Services</h3>
+      <p>Salon-quality beauty treatments at your home by trained staff.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/tutor.png" alt="Tutor" />
+      <h3>Private Tutor</h3>
+      <p>Home tutoring for school subjects, test prep, and skills training.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/law.png" alt="Lawyer" />
+      <h3>Lawyer</h3>
+      <p>Get legal help with contracts, disputes, family law, and more.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/car.png" alt="Mechanic" />
+      <h3>Mechanic</h3>
+      <p>Car and bike servicing, repairs, diagnostics, and emergency help.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/taxi.png" alt="Driver" />
+      <h3>Driver</h3>
+      <p>Hire experienced drivers for daily, hourly, or outstation needs.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/paint-roller.png" alt="Painter" />
+      <h3>Painter</h3>
+      <p>Interior and exterior painting services with free estimates.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/security-checked.png" alt="Security Guard" />
+      <h3>Security Guard</h3>
+      <p>Hire trained guards for residential, events, and business premises.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/broom.png" alt="Housekeeping" />
+      <h3>Housekeeping</h3>
+      <p>Daily/weekly housekeeping for apartments, offices, and villas.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/warehouse.png" alt="Packers & Movers" />
+      <h3>Packers & Movers</h3>
+      <p>Safe, fast, and professional relocation services for home/office.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/laundry.png" alt="Laundry" />
+      <h3>Laundry</h3>
+      <p>Doorstep laundry, dry cleaning, ironing with quick delivery.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/chef-hat.png" alt="Cook" />
+      <h3>Cook</h3>
+      <p>Hire chefs for daily meals, parties, or special dietary needs.</p>
+      <a href="#">View Details</a>
+    </div>
+    <div class="card">
+      <img src="https://img.icons8.com/color/96/help.png" alt="More Services" />
+      <h3>More Services</h3>
+      <p>Explore many more local services tailored to your daily needs.</p>
+      <a href="#">Explore All</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="text-center text-gray-500 text-sm mt-10 mb-5">
+    &copy; 2025 Arsalan Shaikh Company. All rights reserved.
+  </footer>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // 🔐 Your Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyDpsoZ_648AwwL3BU-I_Hze5gZ90mFUTcs",
+      authDomain: "aaaa-8683a.firebaseapp.com",
+      projectId: "aaaa-8683a",
+      storageBucket: "aaaa-8683a.appspot.com",
+      messagingSenderId: "864632443782",
+      appId: "1:864632443782:web:4d975fc087ea09317dd207",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const userInfoDiv = document.getElementById("user-info");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+
+            userInfoDiv.innerHTML = `
+              <div class="bg-gray-100 p-4 rounded shadow max-w-md mx-auto mt-4">
+                <img src="${data.photoURL || 'https://via.placeholder.com/100'}" alt="Profile" class="mx-auto w-24 h-24 rounded-full mb-3 shadow">
+                <h2 class="text-lg font-bold">${data.name || 'No name set'}</h2>
+                <p>Email: ${user.email}</p>
+                <p>Phone: ${data.phone || 'Not set'}</p>
+                <p>Address: ${data.address || 'Not set'}</p>
+              </div>
+            `;
+
+            // Fill top-right user info
+            document.getElementById("user-name").textContent = data.name || "User";
+            document.getElementById("user-id").textContent = user.uid;
+            document.getElementById("user-avatar").src = data.photoURL || "https://via.placeholder.com/40?text=👤";
+
+            // Logout button handler
+            document.getElementById("logoutBtn").addEventListener("click", () => {
+              if(confirm("Are you sure you want to logout?")) {
+                signOut(auth).then(() => window.location.href = "login.html");
+              }
+            });
+
+          } else {
+            userInfoDiv.innerHTML = `<p class="text-red-600 text-center">No user data found in Firestore.</p>`;
+          }
+        } catch (err) {
+          console.error("Error fetching user data:", err);
+          userInfoDiv.innerHTML = `<p class="text-red-600 text-center">Error loading user data.</p>`;
+        }
+      } else {
+        window.location.href = "login.html"; // redirect if not logged in
+      }
+    });
+
+    // Top-right profile click = logout shortcut
+    const userProfile = document.getElementById("user-profile");
+    userProfile.style.cursor = "pointer";
+    userProfile.onclick = () => {
+      if (confirm("Logout?")) {
+        signOut(auth).then(() => window.location.href = "login.html");
+      }
+    };
+  </script>
+</body>
+</html>
