@@ -1,0 +1,381 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Super App Services – Web Presentation</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="description" content="One-page web presentation of the Super App services master list with search, filters, print-to-PDF, and dark mode." />
+  <style> 
+    #lockScreen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #111;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #lockScreen input {
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      outline: none;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+    #lockScreen button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background: #28a745;
+      color: #fff;
+      cursor: pointer;
+    }
+    #content {
+      display: none;
+    }
+ 
+  
+    html { scroll-behavior: smooth; }
+    @media print {
+      .no-print { display: none !important; }
+      .page-break { page-break-before: always; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100">
+  <!-- Navbar -->
+  <div id="lockScreen">
+  <h2 class="text-2xl mb-4">🔒 Enter Password</h2>
+  <input type="password" id="passwordInput" placeholder="Password">
+  <button onclick="checkPass()">Unlock</button>
+  <p id="error" style="color:red;margin-top:10px;"></p>
+</div>
+  <header class="sticky top-0 z-50 backdrop-blur bg-white/80 dark:bg-slate-900/70 border-b border-slate-200 dark:border-slate-800 no-print">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+      <div class="w-9 h-9 rounded-2xl bg-gradient-to-r from-indigo-500 via-fuchsia-500 to-rose-500"></div>
+      <h1 class="text-lg font-semibold">Super App – Services Master Presentation</h1>
+      <div class="ml-auto flex items-center gap-2">
+        <button id="printBtn" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 text-sm">Print / Save PDF</button>
+        <button id="darkToggle" aria-label="Toggle dark mode" class="px-3 py-1.5 rounded-xl border text-sm border-slate-300 dark:border-slate-700">Dark</button>
+      </div>
+    </div>
+  </header>  <!-- Hero -->  <section class="relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-br from-indigo-600 via-fuchsia-600 to-rose-600 opacity-90"></div>
+    <svg class="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 800 600" preserveAspectRatio="none" aria-hidden="true">
+      <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="white"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="600" fill="url(#g)"/>
+    </svg>
+    <div class="relative max-w-7xl mx-auto px-4 py-16 sm:py-24 text-white">
+      <p class="uppercase tracking-widest/relaxed text-sm opacity-90">Vision Deck</p>
+      <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight">All‑in‑One Super App</h2>
+      <p class="mt-3 sm:mt-4 max-w-2xl text-white/90">Everything people need in daily life — safety, delivery, transport, services, payments, health, learning, and more — in one powerful app.</p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="#agenda" class="px-4 py-2 rounded-2xl bg-white text-slate-900 font-medium">View Agenda</a>
+        <a href="#sos" class="px-4 py-2 rounded-2xl border border-white/60">Safety First</a>
+      </div>
+    </div>
+  </section>  <!-- Controls -->  <section class="max-w-7xl mx-auto px-4 -mt-8">
+    <div class="grid sm:grid-cols-2 gap-3 no-print">
+      <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700">
+        <label class="text-sm font-medium" for="search">Search services</label>
+        <input id="search" type="text" placeholder="Type to filter…" class="mt-2 w-full rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 px-3 py-2 outline-none"/>
+      </div>
+      <div class="p-4 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700">
+        <span class="text-sm font-medium">Quick actions</span>
+        <div class="mt-3 flex flex-wrap gap-2">
+          <button data-chip="priority" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Top 10</button>
+          <button data-chip="daily" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Daily Needs</button>
+          <button data-chip="transport" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Transport</button>
+          <button data-chip="home" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Home Services</button>
+          <button data-chip="health" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Health</button>
+          <button data-chip="payments" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Payments</button>
+          <button data-chip="education" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Education</button>
+          <button data-chip="gov" class="chip px-3 py-1.5 rounded-full border border-slate-300 dark:border-slate-600">Gov & Utilities</button>
+        </div>
+      </div>
+    </div>
+  </section>  <!-- Agenda -->  <section id="agenda" class="max-w-7xl mx-auto px-4 mt-10">
+    <div class="p-6 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700">
+      <h3 class="text-2xl font-bold">Agenda</h3>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">Categories included in this deck</p>
+      <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        <a href="#daily" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🛒 Daily Needs</a>
+        <a href="#transport" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🚖 Transport</a>
+        <a href="#home" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🏠 Home Services</a>
+        <a href="#personal" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">💇 Personal</a>
+        <a href="#sos" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🛡️ Safety & Emergency</a>
+        <a href="#payments" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">💳 Finance & Payments</a>
+        <a href="#education" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">📚 Education</a>
+        <a href="#health" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">👨‍⚕️ Health & Wellness</a>
+        <a href="#market" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">📦 E‑Commerce</a>
+        <a href="#entertainment" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🎉 Entertainment</a>
+        <a href="#comms" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">📢 Communication</a>
+        <a href="#gov" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🏛️ Government & Utilities</a>
+        <a href="#future" class="group p-4 rounded-xl border hover:shadow-sm border-slate-200 dark:border-slate-700 bg-slate-50/60 dark:bg-slate-900/40">🔮 Future Ideas</a>
+      </div>
+    </div>
+  </section>  <!-- Category Sections -->  <main class="max-w-7xl mx-auto px-4 mt-10 space-y-10"><!-- Highlight: Safety -->
+<section id="sos" class="p-6 rounded-2xl bg-gradient-to-br from-rose-500 to-fuchsia-600 text-white shadow">
+  <h3 class="text-2xl font-bold flex items-center gap-2">🛡️ Ladies Safety (SOS) – Core Feature</h3>
+  <ul class="mt-3 space-y-1 list-disc list-inside opacity-95">
+    <li>One‑tap SOS (long‑press or double‑tap to avoid false alerts)</li>
+    <li>Live GPS location + shareable link</li>
+    <li>Instant alerts to family, friends, nearby verified users</li>
+    <li>Optional auto‑dial 112 (police) + in‑app siren</li>
+  </ul>
+</section>
+
+<!-- Daily Needs -->
+<section id="daily" data-tags="daily priority" class="card">
+  <h3 class="heading">🛒 Daily Needs & Shopping</h3>
+  <ul class="bullets">
+    <li>Grocery / Vegetables delivery</li>
+    <li>Fruits delivery</li>
+    <li>Milk & Dairy delivery</li>
+    <li>Food delivery (restaurants, tiffin service)</li>
+    <li>Meat & Fish delivery</li>
+    <li>Medicine delivery (pharmacy integration)</li>
+    <li>Packaged products (snacks, drinks, staples)</li>
+    <li>Bakery items</li>
+  </ul>
+</section>
+
+<!-- Transport -->
+<section id="transport" data-tags="transport priority" class="card">
+  <h3 class="heading">🚖 Transport & Mobility</h3>
+  <ul class="bullets">
+    <li>Cab booking</li>
+    <li>Auto booking</li>
+    <li>Bike taxi</li>
+    <li>Carpool / ride sharing</li>
+    <li>Delivery riders (parcel service)</li>
+    <li>Outstation cab booking</li>
+  </ul>
+</section>
+
+<!-- Home Services -->
+<section id="home" data-tags="home priority" class="card">
+  <h3 class="heading">🏠 Home Services</h3>
+  <ul class="bullets">
+    <li>Plumber, Electrician, Carpenter</li>
+    <li>House cleaning, Pest control, Painter</li>
+    <li>AC / Fridge / Washing machine repair</li>
+    <li>CCTV installation & repair</li>
+    <li>Home shifting / packers & movers</li>
+  </ul>
+</section>
+
+<!-- Personal Services -->
+<section id="personal" data-tags="personal" class="card">
+  <h3 class="heading">💇 Personal Services</h3>
+  <ul class="bullets">
+    <li>Salon at home (male/female)</li>
+    <li>Spa & massage at home</li>
+    <li>Makeup & bridal services</li>
+    <li>Fitness trainer / yoga instructor</li>
+    <li>Tailor on demand</li>
+    <li>Home tutor</li>
+  </ul>
+</section>
+
+<!-- Safety & Emergency (extra) -->
+<section id="safety" data-tags="safety priority" class="card">
+  <h3 class="heading">🚨 Safety & Emergency</h3>
+  <ul class="bullets">
+    <li>Ladies SOS (location + alerts)</li>
+    <li>Ambulance booking & nearby hospital finder</li>
+    <li>Police helpline (auto‑dial 112)</li>
+    <li>Fire emergency contact</li>
+    <li>Roadside assistance (car/bike breakdown help)</li>
+  </ul>
+</section>
+
+<!-- Finance & Payments -->
+<section id="payments" data-tags="payments priority" class="card">
+  <h3 class="heading">💳 Finance & Payments</h3>
+  <ul class="bullets">
+    <li>UPI payments (send/receive)</li>
+    <li>Recharge (Mobile/DTH)</li>
+    <li>Electricity / water / gas bill payments</li>
+    <li>Credit card bill pay</li>
+    <li>Loan request / EMI reminders</li>
+    <li>Insurance premium payment</li>
+  </ul>
+</section>
+
+<!-- Education -->
+<section id="education" data-tags="education" class="card">
+  <h3 class="heading">📚 Education & Learning</h3>
+  <ul class="bullets">
+    <li>PDF study materials (books/notes)</li>
+    <li>Online courses & skill development</li>
+    <li>Language learning</li>
+    <li>Exam preparation modules</li>
+    <li>Online tuition booking</li>
+  </ul>
+</section>
+
+<!-- Health -->
+<section id="health" data-tags="health priority" class="card">
+  <h3 class="heading">👨‍⚕️ Health & Wellness</h3>
+  <ul class="bullets">
+    <li>Doctor appointment & online consultation</li>
+    <li>Lab test booking</li>
+    <li>Medicine reminders</li>
+    <li>Fitness tracker (steps, calories, BMI)</li>
+    <li>Mental health counseling</li>
+  </ul>
+</section>
+
+<!-- E‑Commerce -->
+<section id="market" data-tags="market" class="card">
+  <h3 class="heading">📦 E‑Commerce & Marketplace</h3>
+  <ul class="bullets">
+    <li>Online shopping (clothes, gadgets, household)</li>
+    <li>Second‑hand marketplace (OLX style)</li>
+    <li>Local shop listing & delivery</li>
+    <li>Handicraft / regional products</li>
+  </ul>
+</section>
+
+<!-- Entertainment -->
+<section id="entertainment" data-tags="entertainment" class="card">
+  <h3 class="heading">🎉 Entertainment & Lifestyle</h3>
+  <ul class="bullets">
+    <li>Event & movie ticket booking</li>
+    <li>Bus/train/flight integrations (future)</li>
+    <li>News feed (local + national)</li>
+    <li>Social community (groups, chat)</li>
+    <li>Games & mini apps</li>
+  </ul>
+</section>
+
+<!-- Communication -->
+<section id="comms" data-tags="comms" class="card">
+  <h3 class="heading">📢 Communication</h3>
+  <ul class="bullets">
+    <li>In‑app chat (user ↔ provider)</li>
+    <li>Group chat / community support</li>
+    <li>Voice/video calls (roadmap)</li>
+    <li>Emergency broadcast (city alerts)</li>
+  </ul>
+</section>
+
+<!-- Government & Utilities -->
+<section id="gov" data-tags="gov" class="card">
+  <h3 class="heading">🏛️ Government & Utilities</h3>
+  <ul class="bullets">
+    <li>Aadhar / PAN / Passport help</li>
+    <li>Ration card / voter ID services</li>
+    <li>Police verification (workers)</li>
+    <li>RTI filing shortcut</li>
+    <li>Municipality complaints</li>
+  </ul>
+</section>
+
+<!-- Future Ideas -->
+<section id="future" data-tags="future" class="card">
+  <h3 class="heading">🔮 Future Expansion</h3>
+  <ul class="bullets">
+    <li>AI Assistant (multi‑language)</li>
+    <li>Job marketplace (part‑time, gig)</li>
+    <li>Freelancer hire system</li>
+    <li>Micro‑loans / credit system</li>
+    <li>Smart home IoT integration</li>
+  </ul>
+</section>
+
+<section class="page-break"></section>
+
+<!-- Closing CTA -->
+<section class="p-6 rounded-2xl bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700">
+  <h3 class="text-2xl font-bold">Next Steps</h3>
+  <ol class="mt-3 list-decimal list-inside space-y-1">
+    <li>Pick Top 10 services for Phase‑1 launch</li>
+    <li>Define MVP flows (user, provider, admin)</li>
+    <li>Start with SOS, Daily Needs, Home Services, Payments</li>
+  </ol>
+  <p class="mt-4 text-sm text-slate-500 dark:text-slate-400">Tip: Use the Print button to export this deck as a PDF for sharing.</p>
+</section>
+
+  </main>  <footer class="max-w-7xl mx-auto px-4 py-10 text-center text-sm text-slate-500 dark:text-slate-400">
+    Built for your Super App vision. © <span id="year"></span>
+  </footer>  <script>
+    // Util classes for sections
+    document.querySelectorAll('.card').forEach(sec => {
+      sec.classList.add('p-6','rounded-2xl','bg-white','dark:bg-slate-800','shadow-sm','border','border-slate-200','dark:border-slate-700');
+      const h = sec.querySelector('h3');
+      if (h) h.classList.add('text-2xl','font-bold');
+      const ul = sec.querySelector('ul');
+      if (ul) ul.classList.add('mt-3','space-y-1','list-disc','list-inside');
+    });
+
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+    const setDark = (on) => {
+      document.documentElement.classList.toggle('dark', on);
+      localStorage.setItem('dark', on ? '1' : '0');
+      darkToggle.textContent = on ? 'Light' : 'Dark';
+    };
+    setDark(localStorage.getItem('dark') === '1');
+    darkToggle.addEventListener('click', () => setDark(!document.documentElement.classList.contains('dark')));
+
+    // Print button
+    document.getElementById('printBtn').addEventListener('click', () => window.print());
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Search filter
+    const search = document.getElementById('search');
+    const sections = Array.from(document.querySelectorAll('main section'));
+    const matches = (text, q) => text.toLowerCase().includes(q.toLowerCase());
+    function applyFilter(q) {
+      const words = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+      sections.forEach(sec => {
+        const text = sec.textContent.toLowerCase();
+        const show = words.length === 0 || words.every(w => text.includes(w));
+        sec.style.display = show ? '' : 'none';
+      });
+    }
+    search.addEventListener('input', (e) => applyFilter(e.target.value));
+
+    // Quick chips by tag
+    document.querySelectorAll('.chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tag = btn.getAttribute('data-chip');
+        search.value = '';
+        sections.forEach(sec => {
+          const tags = (sec.getAttribute('data-tags') || '').split(/\s+/);
+          sec.style.display = (tags.includes(tag) || sec.id === 'sos') ? '' : 'none';
+        });
+        // Scroll to first visible section
+        const first = sections.find(s => s.style.display !== 'none');
+        if (first) first.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  </script><script>
+  const correctPassword = "Arsalan123"; // Apna password yaha set karo
+
+  function checkPass(){
+    const input = document.getElementById("passwordInput").value;
+    if(input === correctPassword){
+      document.getElementById("lockScreen").style.display = "none";
+      document.getElementById("content").style.display = "block";
+    } else {
+      document.getElementById("error").innerText = "❌ Wrong Password!";
+    }
+  }
+</script>
+</body>
+  </html>
